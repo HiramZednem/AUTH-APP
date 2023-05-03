@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../services/auth.service'
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -24,9 +25,15 @@ export class LoginComponent {
 
     const { email, password } = this.myForm.value
 
-    // this.router.navigateByUrl('/dashboard')
     this.authService.login( email, password )
-      .subscribe( console.log )
+      .subscribe( ok => {
+        if ( ok === true ) { //Aquii estoy obligando a que 'ok' tenga un valor booleano
+          this.router.navigateByUrl('/dashboard')
+        } else {
+          console.log(ok)
+          Swal.fire('Error',ok , 'error')
+        }
+      })
   }
 
 }
